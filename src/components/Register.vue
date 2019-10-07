@@ -23,6 +23,7 @@
   import { setTimeout } from 'timers';
  	export default {
      name: "Register",
+   
      components: {AuthForm, AppSnackBar},
      data () {
 		  return {
@@ -32,19 +33,22 @@
       }
     },
     methods: {
+      
 		  register (user) {
+        
 		    this.$store.dispatch('firebaseRegister', user)
           .then((userRegistered) => {              
-            const data = {                
-             // uid: userRegistered.user.uid,
-              email: user.email,
-              //name: AuthForm.txtSurname,
-              //surname: user.surname,
-              //phone: user.phone,
+            const data = {
+              email: user.email, 
+              name:user.nombre,
+              surname: user.apellido,
+              phone: user.telefono,
+              img_url: "",
+              nick: user.nickname,                          
               role: 'customer'
 
             };
-            console.log(userRegistered);
+            
             db.collection('users').doc(userRegistered.user.uid).set(data).then(() => {
               this.$store.commit('setRole', data.role);
               this.$router.push('/');
