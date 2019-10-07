@@ -5,9 +5,6 @@
         <v-carousel-item v-for="(item,i) in items" :src="item.src" :key="i"></v-carousel-item>
       </v-carousel>
 
-      <v-card>
-        <v-card-media src="@/assets/resources/01.jpg" />
-      </v-card>
     </v-container>
     
    

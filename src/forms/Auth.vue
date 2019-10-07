@@ -34,10 +34,19 @@
                     
         />
         <v-text-field
+          prepend-icon="child_care"
+          v-if="action === 'register'"
+          :label="$t('profile.nickname')"  
+          v-model="nick"
+          :rules = "nickRules"
+          name="nickname"    
+                    
+        />
+        <v-text-field
           prepend-icon="phone"
           v-if="action === 'register'"
           :label="$t(`${action}.telefono`)"  
-          v-model="telefono"
+          v-model="phone"
           :rules= "telefonoRules"
           name="phone"                
         />
@@ -81,7 +90,7 @@
         <br>
         <div class="bt-0"> 
         <!-- Boton de registro con google -->
-          <img src="../assets/signinGoogle.png" height= "41" width="240"  @click="submitGoogle" >
+          <img src="../assets/signinGoogle.png"   @click="submitGoogle" >
           <v-spacer />
           
           <!-- Boton de registro con face -->
@@ -107,7 +116,7 @@
  	export default {
  
          name: "auth-form",
-         faceexiste: false,
+         
           props: {
             action: ''
           },
@@ -131,7 +140,7 @@
           (v) => v.length >= 6 || this.$t('validations.minLength', {field: 'Password', length: 6}),
           (v) => v === this.password || this.$t('validations.password_confirmation'),
         ],
-        telefono: '',
+        phone: '',
         telefonoRules:[
           (v) => !!v || this.$t('validations.required', {field: 'Telefono'}),
           (v) => v.length === 10 || /^[1-9]{10}$/.test(v) || this.$t('validations.telefono', {field: 'Telefono'})
@@ -143,9 +152,14 @@
         ],
         surname: '',
         surnameRules:[
-          (v) => !!v || this.$t('validations.required', {field: 'nombre'}),   
+          (v) => !!v || this.$t('validations.required', {field: 'apellido'}),   
             ] ,
-            snackBar: false,
+        nick: '',
+        nickRules: [
+          (v) => !!v || this.$t('validations.required', {field: 'Nickname'}),   
+            (v) => v.length <= 16 || this.$t('validations.maxLength', {field: 'Nick', length: 16}),
+        ],
+        snackBar: false,
         message: '',
         timeout: 5000 ,
         
@@ -165,18 +179,20 @@
               name: result.additionalUserInfo.profile.given_name,
               surname: result.additionalUserInfo.profile.family_name, 
               img_url: result.additionalUserInfo.profile.picture,
+              nick: " ",
+              phone: " ",
               role: 'customer'
             }; 
                                
            db.collection('users').doc(data.uid).onSnapshot(snapshot => {
                 if (snapshot.exists == false) {                    
                 db.collection('users').doc(result.user.uid).set(data).then(() => {
-                this.$store.commit('setRole', data.role);
-                this.$router.push('/').catch(err => {});
+               
+                this.$router.push('/administration/AdminProfile').catch(err => {});
               })
               } else {
                 this.$router.push('/').catch(err => {});
-                this.$store.commit('setRole', data.role);
+               
               };                 
             })      
         })
@@ -199,18 +215,21 @@
               name: result.additionalUserInfo.profile.first_name,
               surname: result.additionalUserInfo.profile.middle_name, 
               img_url: result.additionalUserInfo.profile.picture.data.url,
+              nick: " ",
+              phone: " ",
               role: 'customer'
             };                  
             
             db.collection('users').doc(data.uid).onSnapshot(snapshot => {
+              
                 if (snapshot.exists == false) {                    
                 db.collection('users').doc(result.user.uid).set(data).then(() => {
-                this.$store.commit('setRole', data.role);
-                this.$router.push('/').catch(err => {});
+                
+                this.$router.push('/administration/AdminProfile').catch(err => {});
               })
               } else {
                 this.$router.push('/').catch(err => {});
-                this.$store.commit('setRole', data.role);
+                
               }; 
                 
             }) 
@@ -227,7 +246,8 @@
         
       },
        submit () {
-		    this.$emit('process', {email: this.email, password: this.password});
+        this.$emit('process', {email: this.email, password: this.password, nombre: this.name, apellido: this.surname, telefono: this.phone, nickname: this.nick });
+        
       }
       
     }
