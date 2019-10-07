@@ -11,6 +11,7 @@ export default {
       return firebase.auth().createUserWithEmailAndPassword(user.email, user.password);
     },
     firebaseLogin: ({commit}, user) => {
+      console.log(user);
       return firebase.auth().signInWithEmailAndPassword(user.email, user.password);
     },
     firebaseLogout: () => {
@@ -30,6 +31,7 @@ export default {
         state.user = null;
         state.logged = false;
       }
+      
     },
     setRole: (state, role) => {
       state.role = role;

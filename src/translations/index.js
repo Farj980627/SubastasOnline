@@ -1,7 +1,7 @@
 export default {
     es: {
       guest:       {
-        user: 'Random User'
+        user: 'Invitado'
       },
       messages: {
         processing: 'Procesando la petición',
@@ -68,12 +68,19 @@ export default {
         title: 'Empieza a usar la plataforma',
         submit: 'Registrarme'
       },
+      profile: {
+        home: 'Perfil del Usuario',
+        nickname: 'Quiero que los demás me vean como ....',
+        nickname2: 'Nickname'
+      },
       validations: {
         required: 'El {field} es requerido',
         minLength: 'El {field} debe tener más de {length} caracteres',
+        maxLength: 'El {field} debe tener menos de {length} caracteres',
         email: '{field} debe ser válido',
         telefono: 'El Teléfono debe contener 10 dígitos',
-        password_confirmation: 'Los passwords no coinciden'
+        password_confirmation: 'Los passwords no coinciden',
+        
       },
       admin: {
         information: 'Administra la app',
