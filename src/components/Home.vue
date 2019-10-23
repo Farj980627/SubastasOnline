@@ -19,6 +19,7 @@
         items: [
           {
             src: require ("@/assets/resources/01.jpg")
+           
           },
           {
             src: require ("@/assets/resources/02.jpeg")

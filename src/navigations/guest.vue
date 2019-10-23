@@ -54,17 +54,7 @@
 
           <v-divider />
 
-          <v-list-tile @click="toggleDrawer">
-
-            <v-list-tile-action>
-              <v-icon>arrow_back</v-icon>
-            </v-list-tile-action>
-
-            <v-list-tile-content>
-              <v-list-tile-title>{{ $t('navigation.close_menu') }}</v-list-tile-title>
-            </v-list-tile-content>
-
-          </v-list-tile>
+         
 
         </v-list>
       </v-navigation-drawer>

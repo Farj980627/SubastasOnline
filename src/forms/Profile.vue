@@ -14,41 +14,56 @@
 
       <v-container>
         <v-form  id="nativeForm" v-model="valid" >
-          <v-subheader>Nombre:</v-subheader>
-          <v-text-field
-          prepend-icon="accessibility"  
-          disabled
-          :label= this.name  
-          name="name"                
-          />
+          <v-layout row wrap>  
+            <v-flex xs12 sm5>
+              <v-subheader>Nombre:</v-subheader>
+              <v-text-field
+              prepend-icon="accessibility"  
+              disabled
+              :label= this.name  
+              name="name"                
+              />
+              <v-subheader>{{$t('register.apellido')}}</v-subheader>
+              <v-text-field
+              prepend-icon="face"          
+              :label= this.surname 
+              disabled
+              name="surname"                
+              />
+              <v-subheader>{{$t('profile.nickname2')}}</v-subheader>
+              <v-text-field
+              prepend-icon="child_care"          
+              :label= this.nick 
+              v-model= nick
+              :rules = "nickRules"
+              name="nickname"                
+              />
+              <v-subheader>{{$t('register.telefono')}}</v-subheader>
+              <v-text-field
+              prepend-icon="phone"          
+              :label= this.phone 
+              v-model= phone
+              :rules= "telefonoRules"
+              name="phone"                          
+              />
+
+            </v-flex>
+            <v-flex xs12 sm7>
+              <img  :src="this.url_img" width="400" height="400">
+              <v-spacer />
+     
+              <v-progress-linear v-model="UploadValue"></v-progress-linear>
+              <v-spacer />
+              <input   type="file" @change="onFileSelected" />
+              
+            </v-flex>
           
-          <v-subheader>{{$t('register.apellido')}}</v-subheader>
-          <v-text-field
-          prepend-icon="face"          
-          :label= this.surname 
-          disabled
-          name="surname"                
-          />
-          <v-subheader>{{$t('profile.nickname2')}}</v-subheader>
-           <v-text-field
-          prepend-icon="child_care"          
-          :label= this.nick 
-          v-model= nick
-          :rules = "nickRules"
-          name="nickname"                
-          />
-          <v-subheader>{{$t('register.telefono')}}</v-subheader>
-          <v-text-field
-          prepend-icon="phone"          
-          :label= this.phone 
-          v-model= phone
-          :rules= "telefonoRules"
-          name="phone"                 
-          />
-          <v-spacer />
-          <v-btn @click="submit"  color="blue-grey lighten-1" dark :disabled="!valid">
-          {{ $t('common.save') }}
-        </v-btn>
+          
+            <v-btn @click="submit"  color="blue-grey lighten-1" dark :disabled="!valid">
+              {{ $t('common.save') }}
+            </v-btn>
+          </v-layout>
+       
           
             
         
@@ -63,6 +78,8 @@
     import authModule from '@/modules/auth';
     import AppSnackBar from "@/components/snackBar";
     import {db} from '@/main';
+    import firebase from 'firebase';
+
     export default {
         name: "profile",
         components:{authModule, AppSnackBar},
@@ -70,8 +87,13 @@
           return  {
             valid: false,
             name: "",
-            surname: "",           
+            url_img: "",
+            surname: "", 
+            value: false,          
             nick: '',
+            UploadValue:0,
+          
+            selectedFile: null,
             nickRules: [
               (v) => !!v || this.$t('validations.required', {field: 'Nickname'}),   
               (v) => v.length <= 16 || this.$t('validations.maxLength', {field: 'Nick', length: 16}),
@@ -92,6 +114,8 @@
             this.name = doc.data().name;
             this.surname = doc.data().surname;
             this.phone = doc.data().phone;
+            this.url_img = doc.data().img_url;
+            
             if (doc.data().nick == " "){
               
             } else {
@@ -106,18 +130,32 @@
                      
             db.collection('users').doc(authModule.state.user.uid).update({
               nick: this.nick,
-              phone: this.phone
+              phone: this.phone,
+              img_url: this.url_img
               }
             );
             
-            this.$router.push('/').catch(err => {});
+            this.$router.push('/').catch(err => {});            
+          },
+          onFileSelected(event){
+            this.selectedFile= event.target.files[0];
 
-              
-           
+            const storageRef = firebase.storage().ref(`/perfil/${this.selectedFile.name}`);
+            const task = storageRef.put(this.selectedFile);
+            task.on('state_changed', snapshot => {
+              let percentage = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
+              this.UploadValue = percentage;              
+            }, error=>{console.log(error.message)},
+             ()=>{this.UploadValue=100;
+                task.snapshot.ref.getDownloadURL().then((url)=>{                  
+                  this.url_img = url;              
+             });;       
+             
             
-          }
+          });
         }
         
     }
+  }
     
 </script>

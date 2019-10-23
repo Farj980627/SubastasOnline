@@ -4,6 +4,9 @@ import Home from '@/components/Home';
 import Register from '@/components/Register';
 import Login from '@/components/Login';
 import Profile from '@/components/administration/AdminProfile';
+import PostProduct from '@/components/administration/PostProduct';
+import ViewProducts from '@/components/administration/ShowProducts';
+import ShowProduct from '@/components/administration/ShowProduct';
 
 Vue.use(Router)
 
@@ -45,7 +48,27 @@ const router = new Router({
       name: 'Profile',
       component: Profile,
       meta: {Auth: true, title: 'Perfil'}
+    },
+    {
+      path: '/administration/PostProduct',
+      name: 'PostProduct',
+      component: PostProduct,
+      meta: {Auth: true, title: 'Subir Producto'}
+    },
+    {
+      path: '/administration/ShowProducts',
+      name: 'ShowProducts',
+      component: ViewProducts,
+      meta: {Auth: true, title: 'Ver Productos'}
+    },
+    {
+      path: '/administration/ShowProduct/:id',
+      name: 'ShowProduct',
+      component: ShowProduct,
+      meta: {Auth:  true, title: 'Producto'}
+
     }
+
   ]
 });
 

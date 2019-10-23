@@ -3,15 +3,11 @@ export default {
       guest:       {
         user: 'Invitado'
       },
-      messages: {
-        processing: 'Procesando la petición',
-        accessDenied: 'Acceso denegado',
+      messages: {       
+        
         close: 'Cerrar',
-        saved: 'El {item} se ha creado correctamente',
-        updated: 'El {item} se ha actualizado correctamente',
-        deleted: 'El {item} se ha eliminado correctamente',
-        loading_more_products: 'Cargando más productos...',
-        order_processed: 'El pedido se ha procesado correctamente :)'
+        savePrd: 'Subasta creada correctamente'   
+        
       },
       common: {
         actions: 'Acciones',
@@ -19,10 +15,24 @@ export default {
         edit: 'Editar',
         remove: 'Eliminar',
         add: 'Añadir',
+        addPrd: 'Añadir Producto',
         save: 'Guardar',
         close: 'Cerrar',
         user: 'Usuario',
-        product: 'Producto'
+        product: 'Producto',
+        showPrd: 'Productos',
+        seePrd: 'Ver',
+      
+      },
+      products: {
+        description: 'Descripción',
+        initialPrice: 'Precio Inicial',
+        limitDate: 'Fecha Final',
+        limitHour: 'Hora de Cierre',
+        productName: 'Nombre del Producto',
+        type: 'Tipo'
+
+
       },
       languages: {
         es: 'Español',
@@ -72,6 +82,17 @@ export default {
         home: 'Perfil del Usuario',
         nickname: 'Quiero que los demás me vean como ....',
         nickname2: 'Nickname'
+      },
+      productTemplate: {
+        prdName:"¿Qué estas vendiendo?",
+        prdPrice: "Precio Inicial",
+        prdDesc: "¿Por qué subastas este producto?",
+        prdType: "Tipo de Subasta:",
+        prdLimDate: "Fecha Límite",
+        prdLimHour: "Hora Límite",
+        prdConditions: "Condiciones del Producto"
+        
+
       },
       validations: {
         required: 'El {field} es requerido',

@@ -11,8 +11,13 @@
         <v-spacer />
 
         <v-toolbar-items class="hidden-sm-and-down">
-             <v-btn flat @click="logout">{{ $t('navigation.logout') }}</v-btn>
+            <v-btn flat to='/administration/PostProduct'>{{$t('common.addPrd')}}</v-btn>
+            <v-btn flat to='/administration/ShowProducts'>{{$t('common.showPrd')}}</v-btn>
+            <v-btn flat @click="logout">{{ $t('navigation.logout') }}</v-btn>
+           
         </v-toolbar-items>
+
+        
 
       </v-toolbar>
 
@@ -23,9 +28,11 @@
         dark
         v-model="drawer"
         absolute
+        temporary
         class="blue-grey darken-1"
            
       >
+      <v-list class="pt-0" dense>
       <v-list-tile avatar @click="profile">
         <v-list-tile-avatar >
           <img :src= this.img_url>
@@ -34,33 +41,23 @@
           <v-list-tile-content> {{this.nombreFire}} </v-list-tile-content>
         </v-list-tile-content>
       </v-list-tile>
-      <v-list class="pt-0" dense>
+     
             <v-divider />
             
-            <v-list-tile v-for="item in items" :key="item.title" @click="$router.push(item.to)">
+              <v-list-tile
+                v-for="(item, index) in items"
+                :key="item.title"
+                @click="$router.push(item.to)"
+              >
+                <v-list-tile-action :key="index">
+                  <v-icon>{{ item.icon }}</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
 
-              <v-list-tile-action>
-                <v-icon>{{ item.icon }}</v-icon> 
-              </v-list-tile-action>
-
-              <v-list-tile-content>
-                <v-list-tile-title>
-                  {{ item.title }}
-                </v-list-tile-title>
-              </v-list-tile-content>
-
-            </v-list-tile>
-
-            <v-divider />
-
-            <v-list-tile @click="toggleDrawer" >
-              <v-list-tile-action>
-                <v-icon>arrow_back</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ $t('navigation.close_menu') }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
+           
 
             <v-divider />
 
@@ -74,6 +71,8 @@
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
+
+
 
         </v-list>
       </v-navigation-drawer>
@@ -101,7 +100,8 @@
         
         items: [
           { title: this.$t('navigation.home'), icon: 'home', to: '/' },
-         
+          { title: this.$t('common.addPrd'), icon: 'add_box', to:'/administration/PostProduct'},   
+          { title: this.$t('common.showPrd'), icon: 'folder', to:'/administration/ShowProducts'}    
         ],
         img_url: "" ,
         nombreFire: "",
